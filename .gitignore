@@ -129,9 +129,10 @@ dmypy.json
 .pyre/
 
 # custom
-./config.toml
-./logs/*
-./logs
-./screenshots/*
-./screenshots
-./pets/*
+config.toml
+logs/*
+logs
+screenshots/*
+screenshots
+pets/*
+pets

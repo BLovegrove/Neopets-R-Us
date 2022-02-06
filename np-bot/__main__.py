@@ -2,7 +2,7 @@ from concurrent.futures import process
 import logging
 import datetime
 import sys
-# import os
+import os
 from io import BytesIO
 
 from typing import List
@@ -20,6 +20,15 @@ from . import config as CFG
 
 now = datetime.datetime.now()
 # module_dir = os.path.dirname(__file__)
+
+if (not os.path.exists('logs')):
+    os.mkdir('logs')
+    
+if (not os.path.exists('screenshots')):
+    os.mkdir('screenshots')
+    
+if (not os.path.exists('pets')):
+    os.mkdir('pets')
 
 logging.basicConfig(
     handlers=[
