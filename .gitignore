@@ -127,3 +127,11 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# custom
+./config.toml
+./logs/*
+./logs
+./screenshots/*
+./screenshots
+./pets/*

@@ -1,0 +1,6 @@
+max_attempts = 20
+color_blacklist = ['red', 'yellow', 'blue', 'green']
+
+[login]
+username=""
+password=""
