@@ -1,6 +1,0 @@
-max_attempts = 50
-color_blacklist = ['red', 'yellow', 'blue', 'green']
-
-[login]
-username="NotACardboardBox"
-password="P@ssw0RD40*"
