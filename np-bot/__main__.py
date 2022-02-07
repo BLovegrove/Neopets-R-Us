@@ -1,4 +1,3 @@
-from concurrent.futures import process
 import logging
 import datetime
 import sys
@@ -6,7 +5,6 @@ import os
 from io import BytesIO
 
 from typing import List
-import selenium
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
@@ -19,7 +17,6 @@ from PIL import Image
 from . import config as CFG
 
 now = datetime.datetime.now()
-# module_dir = os.path.dirname(__file__)
 
 if (not os.path.exists('logs')):
     os.mkdir('logs')
@@ -40,27 +37,6 @@ logging.basicConfig(
     datefmt='%Y-%m-%d %H:%M:%S'
 )
 
-def save_pet_image (pet: WebElement, driver: webdriver.Chrome):
-    
-    name = pet.find_element(By.ID, f"{pet.get_property('id')}_name").text
-    # filename = os.path.join(module_dir, f"pets/{name}.png")
-    
-    card_img = Image.open(BytesIO(driver.get_screenshot_as_png()))
-    card_location = pet.location
-    card_size = pet.size
-    
-    left = card_location['x']
-    top = card_location['y']
-    right = card_location['x'] + card_size['width']
-    bottom = card_location['y'] + card_size['height']
-    
-    card_img = card_img.crop((left, top, right, bottom)) 
-    card_img.save(f"pets/{name}.png")
-                
-    logging.info(f"Pet saved.")
-    
-    return
-
 def login (driver: webdriver.Chrome, config):
     
     try:
@@ -76,7 +52,6 @@ def login (driver: webdriver.Chrome, config):
         WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '/html/body/div[20]/div[2]/div[2]')))
         
     except TimeoutException:
-        # driver.get_screenshot_as_file(os.path.join(module_dir, 'screenshots/login_failed.png'))
         driver.get_screenshot_as_file('screenshots/login_failed.png')
         logging.error(f"Login failed. Screenshot saved as 'login_failed.png'.")
         
@@ -94,11 +69,11 @@ def goto_pound (driver: webdriver.Chrome):
         WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '/html/body/div[4]/div[3]/table/tbody/tr/td/div[2]/div[3]/div/a')))
         
     except TimeoutException:
-        # driver.get_screenshot_as_file(os.path.join(module_dir, 'screenshots/nav_failed_(pound).png'))
         driver.get_screenshot_as_file('screenshots/nav_failed_(pound).png')
         logging.error("Failed to navigate to the pound. Screenshot saved as 'nav_failed_(pound).png'")
+        return
     
-        sys.exit()
+        # sys.exit()
     
     logging.info("Navigation successful.")
     return
@@ -113,14 +88,18 @@ def filter_pets (driver: webdriver.Chrome, color_blacklist: list) -> List[WebEle
             pet0_color = driver.find_element(By.ID, f"pet0_color").text.lower()
             pet1_color = driver.find_element(By.ID, f"pet1_color").text.lower()
             pet2_color = driver.find_element(By.ID, f"pet2_color").text.lower()
+            
         
             if (pet0_color not in color_blacklist):
+                logging.critical("Found a rare color! ")
                 rare_pets.append(driver.find_element(By.ID, 'pet0'))
                 
             if (pet1_color not in color_blacklist):
+                logging.critical("Found a rare color! ")
                 rare_pets.append(driver.find_element(By.ID, 'pet1'))
                 
             if (pet2_color not in color_blacklist):
+                logging.critical("Found a rare color! ")
                 rare_pets.append(driver.find_element(By.ID, 'pet2'))
             
         except NoSuchElementException:
@@ -130,6 +109,26 @@ def filter_pets (driver: webdriver.Chrome, color_blacklist: list) -> List[WebEle
         logging.info(f"Pet data retrieved [{pet0_color},{pet1_color},{pet2_color}]. Checking for rare colors...")
                 
         return (rare_pets if len(rare_pets) > 0 else None)
+    
+def save_pet_image (pet: WebElement, driver: webdriver.Chrome):
+    
+    name = pet.find_element(By.ID, f"{pet.get_property('id')}_name").text
+    
+    card_img = Image.open(BytesIO(driver.get_screenshot_as_png()))
+    card_location = pet.location
+    card_size = pet.size
+    
+    left = card_location['x']
+    top = card_location['y']
+    right = card_location['x'] + card_size['width']
+    bottom = card_location['y'] + card_size['height']
+    
+    card_img = card_img.crop((left, top, right, bottom)) 
+    card_img.save(f"pets/{name}.png")
+                
+    logging.info(f"Pet saved.")
+    
+    return
 
 def main():
     
@@ -140,7 +139,7 @@ def main():
     options.add_argument('load-extension=' + 'np-bot/ublock')
     
     driver = webdriver.Chrome(options=options)
-    # driver.create_options()
+    driver.create_options()
     driver.set_window_size(width=1920, height=1080)
     
     login (driver, config)
