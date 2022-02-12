@@ -133,9 +133,10 @@ To get a local copy up and running follow these simple example steps.
 - [x] ~~Add detailed datetime-based logging system~~
 - [x] ~~Save entire pet card with the name~~ 
 - [x] ~~Make sure you're auto-creating log + screenshots folder 🤦~~
-- [ ] Support multiple accounts if pet slots are full
 - [ ] Detect open pet slots and adopt most valuable one(s)
+  - [ ] Support multiple accounts if pet slots are full
 - [ ] Check for ['Un-converted' neopets](https://neopets.fandom.com/wiki/Unconverted) using realtime image processing
+  - [ ] Add some kind of user-alert for detected UCs
 
 See the [open issues](https://github.com/BLovegrove/Neopets-R-Us/issues) for a full list of proposed features (and known issues).
 
