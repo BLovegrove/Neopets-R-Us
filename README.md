@@ -112,13 +112,13 @@ To get a local copy up and running follow these simple example steps.
    ```
 2. Create pipenv with dependencies
    ```sh
-   ./Neopets-R-Us/> pipenv install
+   .../Neopets-R-Us/ > pipenv install
    ```
 3. Rename config_template.toml to config.toml
 4. Fill in your Neopets username + password in the config.toml file.
 5. Launch the bot with:
    ```sh
-   ./Neopets-R-Us/> pipenv run np-bot
+   .../Neopets-R-Us/ > pipenv run np-bot
    ```
 6. Profit!!!
 
