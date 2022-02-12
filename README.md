@@ -69,7 +69,7 @@
 
 Earlier joking aside, the issue said flatmate of mine has is a busy schedule that doesnt leave them with the time to sit down and refresh the Neopets pound non-stop looking for rare pet colors. This little program will log in with your credentials using Selenium, load into the pound, and start saving pictures of all the rare 'pets!
 
-It does some fairly simple x-path lookup (fastest method) to check the color field against a blacklist contained in a handy-dandy config file. If the color matches something in the list, ignore it and move on. 
+It does a fairly simple x-path lookup (fastest method) to check the color field against a blacklist contained in a handy-dandy config file. If the color matches something in the list, ignore it and move on. 
 
 for each pet out of each 3-pet page that fails to match against the blacklist, the bot will take a webpage screenshot and hand it to Pillow for cropping down to just the relevant third of the pets section. That then gets saved as a .png (in wherever you cloned this repo) under the pets unique name! Easy as 3.1415.
 
