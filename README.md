@@ -100,7 +100,7 @@ To get a local copy up and running follow these simple example steps.
   (for linux users, the apt-install for pipenv may be broken! As a general rule, please use python3-pip to install it instead)
 
 * [ChromeDriver](https://chromedriver.chromium.org/downloads) version that matches your [chrome](https://www.google.com/chrome/) installation
-<br/>
+  <br/>
   - make sure this is in youre $PATH ([Windows](https://jonathansoma.com/lede/foundations-2018/classes/selenium/selenium-windows-install/), [Mac](https://www.swtestacademy.com/install-chrome-driver-on-mac/)) - Linux users can just grab chromium-chromedriver from their preferred package manager.
 
 
