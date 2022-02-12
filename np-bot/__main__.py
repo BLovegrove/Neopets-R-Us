@@ -37,6 +37,53 @@ logging.basicConfig(
     datefmt='%Y-%m-%d %H:%M:%S'
 )
 
+def main():
+    
+    config = CFG.load_config()
+    
+    options = webdriver.ChromeOptions()
+    options.headless = True
+    options.add_argument('load-extension=' + 'np-bot/ublock')
+    
+    driver = webdriver.Chrome(options=options)
+    driver.create_options()
+    driver.set_window_size(width=1920, height=1080)
+    
+    login (driver, config)
+    
+    attempt = 1
+    max_attempts = config['max_attempts']
+    
+    while True:
+    
+        logging.info(f"Running analysis batch {attempt} of {(max_attempts if max_attempts > 0 else '∞')}...")
+            
+        goto_pound(driver)
+
+        # Go over pound data
+        rare_pets = filter_pets (driver, config['color_blacklist'])
+        
+        if rare_pets:
+            logging.info(f'Saving {len(rare_pets)} pet card(s)...')
+            
+            for pet in rare_pets:
+                save_pet_image (pet, driver)
+                
+            logging.info("All cards saved to 'pets' directory.")
+            
+        else:
+            logging.info('Failed to find any rare colors. Retrying with next adoption page...')
+            
+        if (max_attempts != 0 and attempt == max_attempts):
+            logging.info('Max attempts reached. Gracefully killing program.')
+            break
+            
+        attempt += 1
+
+    driver.find_element(By.ID, 'logout_link').click()
+    WebDriverWait(driver, 1)
+    driver.close()
+
 def login (driver: webdriver.Chrome, config):
     
     try:
@@ -129,53 +176,6 @@ def save_pet_image (pet: WebElement, driver: webdriver.Chrome):
     logging.info(f"Pet saved.")
     
     return
-
-def main():
-    
-    config = CFG.load_config()
-    
-    options = webdriver.ChromeOptions()
-    options.headless = True
-    options.add_argument('load-extension=' + 'np-bot/ublock')
-    
-    driver = webdriver.Chrome(options=options)
-    driver.create_options()
-    driver.set_window_size(width=1920, height=1080)
-    
-    login (driver, config)
-    
-    attempt = 1
-    max_attempts = config['max_attempts']
-    
-    while True:
-    
-        logging.info(f"Running analysis batch {attempt} of {(max_attempts if max_attempts > 0 else '∞')}...")
-            
-        goto_pound(driver)
-
-        # Go over pound data
-        rare_pets = filter_pets (driver, config['color_blacklist'])
-        
-        if rare_pets:
-            logging.info(f'Saving {len(rare_pets)} pet card(s)...')
-            
-            for pet in rare_pets:
-                save_pet_image (pet, driver)
-                
-            logging.info("All cards saved to 'pets' directory.")
-            
-        else:
-            logging.info('Failed to find any rare colors. Retrying with next adoption page...')
-            
-        if (max_attempts != 0 and attempt == max_attempts):
-            logging.info('Max attempts reached. Gracefully killing program.')
-            break
-            
-        attempt += 1
-
-    driver.find_element(By.ID, 'logout_link').click()
-    WebDriverWait(driver, 1)
-    driver.close()
 
 if __name__ == '__main__':
     
